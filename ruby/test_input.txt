@@ -1,0 +1,7 @@
+create Pizza do
+    spread sauce
+    toppings onions, jalapenos, green_peppers
+    spread cheese
+    bake
+    display
+end

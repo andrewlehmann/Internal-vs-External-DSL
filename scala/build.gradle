@@ -1,0 +1,36 @@
+apply plugin: 'scala'
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.11.8'
+    testCompile 'org.scalatest:scalatest_2.11:3.0.0'
+    compile group: 'com.twitter', name: 'util-eval_2.11', version: '6.42.0'
+
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets.main.scala.srcDirs = ['src/main/scala']
+sourceSets.main.scala.excludes = ['main.scala']
+sourceSets.test.scala.srcDirs = ['src/test']
+
+task scalaTest(overwrite: true, dependsOn:['testClasses'], type: JavaExec) {
+    description = 'Runs scala tests'
+    main = 'org.scalatest.tools.Runner'
+    args = ['-R', 'build/classes/scala/test', '-o']
+    classpath = sourceSets.test.runtimeClasspath
+}
+
+test.dependsOn scalaTest
+
+task run(type: Exec) {
+    commandLine 'sh', './testOutput.sh'
+}
+
+defaultTasks 'clean', 'build', 'run'
+
+// source for scalaTest task 
+//https://stackoverflow.com/questions/28592343/how-do-i-run-both-scalatest-and-junit-tests-with-gradle
+
+// rest found via Gradle's tutorial
